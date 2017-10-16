@@ -10,8 +10,12 @@ class ListadoPrecios extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      proyectos: []
+      proyectos: props.proyectos,
+      showGrid: props.showGrid,
+      value: '8'
     };
+    //his.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -22,10 +26,14 @@ class ListadoPrecios extends React.Component {
         method: 'GET',
         data: { data: self.state },
         success: function(data) {
-          //this.setState({
-            proyectos: data.data
-          //});
-        },
+          var proyectosList = [];
+          for (var i = 0; i < data.length; i++) {
+            proyectosList.push(<option key={data[i].cod_proyecto} value={data[i].cod_proyecto}>{data[i].descripcion}</option>);
+          }
+          this.setState({
+            proyectos: proyectosList
+          });
+        }.bind(this),
         error: function(xhr, status, error) {
           alert('Cannot get a record: ', error);
         }
@@ -37,6 +45,17 @@ class ListadoPrecios extends React.Component {
     $('#listadoPreciosTable').dataTable(destroy);
   }
 
+  handleChange(event) {
+   this.setState({value: event.target.value});
+   console.log('alv' + this.state.value)
+  }
+
+  handleSubmit(event) {
+   alert('Your favorite flavor is: ' + this.state.value);
+   console.log('alv' + this.state.value)
+   event.preventDefault();
+ }
+
   render() {
     return(
       <ContentWrapper>
@@ -46,15 +65,16 @@ class ListadoPrecios extends React.Component {
         <Panel header="Proyecto">
           <fieldset>
               <div className="form-group mb">
-                  <Col >
-                      <select id="proyectosSelect" value={this.props.proyectos} className="form-control">
-                        <option value={option.value} selected={optionsState == option.value}>{option.label}</option>
+                  <Col>
+                      <select id="proyectosSelect" value={this.state.value} onChange={this.handleChange} className="form-control">
+                        {this.state.proyectos}
                       </select>
                   </Col>
               </div>
           </fieldset>
         </Panel>
-        <Grid fluid>
+        <button onClick={this.handleSubmit}> Zzz</button>
+        <Grid fluid hidden="{this.state.showGrid}">
           <Row>
               <Col lg={ 12 }>
                   <Panel header="Listas">

@@ -31,7 +31,7 @@ export default () => {
       zeroRecords: 'No se ha encontrado nada - lo sentimos',
       infoEmpty: 'No hay datos disponibles',
       infoFiltered: '(filtrado de _MAX_ registros totales)',
-      //sLoadingRecords: 
+      //sLoadingRecords:
     },
     // Datatable Buttons setup
     dom: '<"html5buttons"B>lTfgitp',
@@ -43,5 +43,12 @@ export default () => {
       {extend: 'print', className: 'btn-sm' }
     ]
   })
+
+  if ( $.fn.select2 ) {
+      $('#proyectosSelect').select2({
+          placeholder: 'Selecciona el proyecto',
+          theme: 'bootstrap'
+      });
+  }
 
 }
